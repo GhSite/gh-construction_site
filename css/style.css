@@ -123,20 +123,14 @@ h3 { font-size:clamp(17px,1.8vw,21px); }
 }
 
 /* LOGO */
-.logo { display:flex; align-items:center; gap:10px; flex-shrink:0; }
+.logo { display:flex; align-items:center; flex-shrink:0; }
 
-.logo-gh {
-    display:flex; align-items:center; justify-content:center;
-    width:42px; height:42px;
-    background:var(--green); color:var(--white);
-    font-size:17px; font-weight:800;
-    border-radius:10px; letter-spacing:-1px; flex-shrink:0;
+.logo-img {
+    height: 52px;
+    width: auto;
+    display: block;
+    object-fit: contain;
 }
-.logo-label {
-    font-size:14.5px; font-weight:700;
-    color:var(--white); line-height:1.25;
-}
-.logo-label em { font-style:normal; color:rgba(180,255,140,.9); }
 
 /* NAV */
 #nav { margin-left:auto; }
@@ -277,7 +271,7 @@ h3 { font-size:clamp(17px,1.8vw,21px); }
 
 .stat strong {
     display:block; font-size:clamp(26px,2.8vw,40px); font-weight:800;
-    color:rgba(180,255,140,.95); letter-spacing:-1px; line-height:1;
+    color:rgba(180,255,140,.95); letter-spacing:0px; line-height:1;
     margin-bottom:6px;
 }
 .stat span {

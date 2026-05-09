@@ -90,18 +90,43 @@ document.querySelectorAll('a[href^="#"]').forEach(anchor => {
 /* -----------------------------------------------
    FORMULAIRE DE CONTACT
 ----------------------------------------------- */
-const contactForm   = document.getElementById('contactForm');
-const formSuccess   = document.getElementById('formSuccess');
+const form = document.getElementById('contactForm');
+const successMessage = document.getElementById('formSuccess');
 
-if (contactForm && formSuccess) {
-    contactForm.addEventListener('submit', e => {
-        e.preventDefault();
-        // Simulation d'envoi — à remplacer par un vrai backend / service email
-        contactForm.style.display = 'none';
-        formSuccess.style.display = 'block';
-    });
-}
+form.addEventListener('submit', function(e) {
+    e.preventDefault();
+    
+    const formData = new FormData(form);
+    const object = Object.fromEntries(formData);
+    const json = JSON.stringify(object);
 
+    // Message de chargement sur le bouton
+    const btn = form.querySelector('button');
+    btn.innerHTML = "Envoi en cours...";
+    btn.disabled = true;
+
+    fetch('https://api.web3forms.com/submit', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+                'Accept': 'application/json'
+            },
+            body: json
+        })
+        .then(async (response) => {
+            if (response.status == 200) {
+                // Succès : On cache le formulaire et on montre votre div form-success
+                form.style.display = "none";
+                successMessage.style.display = "block";
+            } else {
+                alert("Erreur lors de l'envoi.");
+            }
+        })
+        .catch(error => {
+            console.log(error);
+            alert("Une erreur est survenue.");
+        });
+});
 /* -----------------------------------------------
    COMPTEUR ANIMÉ DES STATISTIQUES (hero)
 ----------------------------------------------- */
