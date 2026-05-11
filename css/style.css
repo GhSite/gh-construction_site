@@ -123,7 +123,7 @@ h3 { font-size:clamp(17px,1.8vw,21px); }
 }
 
 /* LOGO */
-.logo { display:flex; align-items:center; flex-shrink:0; }
+.logo { display:flex; align-items:center; flex-shrink:0;  gap: 8px;}
 
 .logo-img {
     height: 52px;
