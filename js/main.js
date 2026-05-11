@@ -88,45 +88,47 @@ document.querySelectorAll('a[href^="#"]').forEach(anchor => {
 });
 
 /* -----------------------------------------------
-   FORMULAIRE DE CONTACT
+   FORMULAIRE DE CONTACT (Formspree)
 ----------------------------------------------- */
-const form = document.getElementById('contactForm');
-const successMessage = document.getElementById('formSuccess');
+const contactForm = document.getElementById('contactForm');
+const successMsg = document.getElementById('formSuccess');
 
-form.addEventListener('submit', function(e) {
-    e.preventDefault();
-    
-    const formData = new FormData(form);
-    const object = Object.fromEntries(formData);
-    const json = JSON.stringify(object);
+if (contactForm) {
+    contactForm.addEventListener('submit', async function(e) {
+        e.preventDefault();
+        
+        const btn = contactForm.querySelector('button');
+        const originalBtnText = btn.innerHTML;
+        btn.innerHTML = "Envoi en cours...";
+        btn.disabled = true;
 
-    // Message de chargement sur le bouton
-    const btn = form.querySelector('button');
-    btn.innerHTML = "Envoi en cours...";
-    btn.disabled = true;
+        const formData = new FormData(contactForm);
 
-    fetch('https://api.web3forms.com/submit', {
-            method: 'POST',
-            headers: {
-                'Content-Type': 'application/json',
-                'Accept': 'application/json'
-            },
-            body: json
-        })
-        .then(async (response) => {
-            if (response.status == 200) {
-                // Succès : On cache le formulaire et on montre votre div form-success
-                form.style.display = "none";
-                successMessage.style.display = "block";
+        try {
+            const response = await fetch(contactForm.action, {
+                method: 'POST',
+                body: formData,
+                headers: {
+                    'Accept': 'application/json'
+                }
+            });
+
+            if (response.ok) {
+                contactForm.style.display = "none";
+                successMsg.style.display = "block";
+                contactForm.reset();
             } else {
-                alert("Erreur lors de l'envoi.");
+                alert("Erreur lors de l'envoi. Vérifiez vos informations.");
+                btn.innerHTML = originalBtnText;
+                btn.disabled = false;
             }
-        })
-        .catch(error => {
-            console.log(error);
-            alert("Une erreur est survenue.");
-        });
-});
+        } catch (error) {
+            alert("Erreur réseau. Vérifiez votre connexion.");
+            btn.innerHTML = originalBtnText;
+            btn.disabled = false;
+        }
+    });
+}
 /* -----------------------------------------------
    COMPTEUR ANIMÉ DES STATISTIQUES (hero)
 ----------------------------------------------- */
